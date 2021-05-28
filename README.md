@@ -28,7 +28,53 @@ Example:
 var pdfMake = require("pdfmake/build/pdfmake");
 var pdfFonts = require("pdfmake/build/vfs_fonts");
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-var htmlToPdfmake = require("html-to-pdfmake");
+var htmlToPdfMakeinit = require("html-to-pdfmake");
+// to async:
+const imageThumbnail = require('image-thumbnail');
+const fetch = require('node-fetch');
+
+var base64cache = {}; // to have access to image cache
+var nofilebase64 = null; // fill an image in base64 and set it as default
+
+let htmltopdfinit = {
+  ttl: 1000*60*10,//optional
+  ttlempty:1000*60*60, //optional
+	base64cache:base64cache,//optional
+	nofilebase64:nofilebase64,//optional
+	imageThumbnail:imageThumbnail,//obligatory
+	fetch:fetch//obligatory
+	};
+
+ var htmlToPdfMake = new htmlToPdfMakeinit(htmltopdfinit); // iniciate
+
+var html = htmlToPdfmake.create(`
+  <img src="https://kinsta.com/es/wp-content/uploads/sites/8/2020/10/tipos-de-archivos-de-imagen.png" 
+  width="300" height="150"/>
+  <img src="https://google.com/image.jpg" 
+  width="300" height="150"/>
+  <table>
+      <tr><td>
+          <img src="https://kinsta.com/es/wp-content/uploads/sites/8/2020/10/tipos-de-archivos-de-imagen.png" 
+          style="width:300;height:150"/>
+      </td></tr>
+  </table>
+
+`,{
+	window:window,
+  ttl: 1000*60*10,//optional
+  ttlempty:1000*60*60, //optional
+	});
+
+// to depure cache
+	htmlToPdfMake.depure(); or htmlToPdfMake.depure(base64cache);
+
+
+// to depure cache with ttl
+	htmlToPdfMake.depure(ttl); or htmlToPdfMake.depure(ttl, base64cache);
+
+  // to empty all cache
+	htmlToPdfMake.empty();
+
 
 var html = htmlToPdfmake(`
   <div>
